@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    
+    <!-- This line links our HTML skeleton to our CSS paint! -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- This container holds the entire app -->
+    <div class="app-container">
+        
+        <!-- 1. The Dark Left Sidebar -->
+        <div class="left-sidebar">
+            <h1 class="logo">Track Buddy</h1>
+            <div class="menu-item active">Dashboard</div>
+            <div class="menu-item">Schedule</div>
+            <div class="menu-item">Study</div>
+            <div class="menu-item">Tasks</div>
+            <div class="menu-item">Budget</div>
+        </div>
+
+        <!-- 2. The Main Cream-Colored Area (For the Grid) -->
+        <!-- 2. The Main Cream-Colored Area (For the Grid) -->
+        <div class="main-content">
+            
+            <!-- The Greeting -->
+            <div class="greeting-section">
+                <h2 class="greeting-title">Good afternoon, Haritha</h2>
+                <p class="greeting-subtitle">You have 3 tasks today, 4 deadlines this week, and 2 things looking directly at you.</p>
+            </div>
+
+            <!-- The 2x2 Card Grid -->
+            <div class="cards-grid">
+                <div class="card card-yellow">
+                    <h3 class="card-title">Today's Status</h3>
+    
+                    <!-- The Big Number and Subtitle -->
+                    <div class="main-stat">51%</div>
+                    <div class="stat-subtitle">Academic survival chance</div>
+                    
+                    <!-- The Mini Bar Chart -->
+                    <div class="bar-chart">
+                        <div class="bar bar-1"></div>
+                        <div class="bar bar-2"></div>
+                        <div class="bar bar-3"></div>
+                        <div class="bar bar-4"></div>
+                    </div>
+                </div>
+                
+                
+                <div class="card card-pink">
+                    <!-- Top row with Title and Badge -->
+                    <div class="card-header">
+                        <h3 class="card-title">Next Class</h3>
+                        <div class="badge badge-pink">this week</div>
+                    </div>
+                    
+                    <!-- The Main Progress Stat -->
+                    <div class="main-stat">59%</div>
+                    <div class="stat-subtitle stat-subtitle-dark">AVERAGE PROGRESS</div>
+                    
+                    <!-- The Extra Stats at the Bottom -->
+                    <div class="extra-stats">
+                        <div class="stat-box">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">MODULES</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">NEED HELP</div>
+                        </div>
+                    </div>
+                </div>
+            
+
+                <!-- GREEN CARD -->
+                <div class="card card-green">
+                    <div class="card-header">
+                        <h3 class="card-title">Budget</h3>
+                        <div class="badge badge-green">this month</div>
+                    </div>
+                    <!-- Using the same stat styles we already created! -->
+                    <div class="main-stat">₹ 1,500</div>
+                    <div class="stat-subtitle stat-subtitle-dark">remaining this month</div>
+                </div>
+
+                <!-- BLUE CARD -->
+                <!-- BLUE CARD -->
+                <div class="card card-blue">
+                    <div class="card-header">
+                        <h3 class="card-title">Mood</h3>
+                        <div class="badge badge-blue">today</div>
+                    </div>
+                    <div class="mood-selector">
+                        <div class="mood-icon">😴</div>
+                        <div class="mood-icon active-mood">😐</div>
+                        <div class="mood-icon">🔋</div>
+                    </div>
+                    <div class="stat-subtitle stat-subtitle-dark">Current mood: tired but functional</div>
+                </div>
+
+            </div> <!-- THIS CLOSES THE CARDS GRID -->
+
+        </div> <!-- THIS CLOSES THE MAIN CONTENT (CRITICAL!) -->
+
+        <!-- 3. Right Sidebar (Now safely in its own column) -->
+        <div class="right-sidebar">
+            <div class="sidebar-header">
+                <div class="current-month">May 2026</div>
+                <button class="add-event-btn">Add event</button>
+            </div>
+            <h4 class="timeline-title">Today's Timeline</h4>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="time">09:00 AM</div>
+                    <div class="event-details">
+                        <div class="event-name">Web Dev Lecture</div>
+                        <div class="event-tag">Class</div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="time">01:30 PM</div>
+                    <div class="event-details">
+                        <div class="event-name">Project Group Meeting</div>
+                        <div class="event-tag">Lab</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- THIS CLOSES THE APP CONTAINER -->
+
+</body>
+</html>

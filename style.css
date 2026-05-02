@@ -1,0 +1,264 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+.app-container {
+    display: grid;
+    grid-template-columns: 240px 1fr 320px; 
+    height: 100vh;
+}
+
+.left-sidebar {
+    background-color: #222222;
+    padding: 40px 24px;
+}
+
+.logo {
+    color: #FFFFFF;
+    font-size: 24px;
+    margin-bottom: 40px;
+}
+
+.menu-item {
+    color: #A0A0A0;
+    font-size: 16px;
+    padding: 12px 0;
+    cursor: pointer;
+}
+
+.menu-item.active {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.main-content {
+    background-color: #F6F5F2;
+    padding: 40px 60px;
+}
+
+.right-sidebar {
+    background-color: #EBE8E0;
+    padding: 40px 24px;
+}
+
+.greeting-section {
+    margin-bottom: 40px;
+}
+
+.greeting-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #222222;
+    margin-bottom: 8px;
+}
+
+.greeting-subtitle {
+    font-size: 16px;
+    color: #888888;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 24px;
+}
+
+.card {
+    height: 220px;
+    border-radius: 32px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column; 
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #222222;
+}
+
+.card-yellow { background-color: #FCDA6B; }
+.card-pink   { background-color: #F4A8C5; }
+.card-green  { background-color: #A5C98F; }
+.card-blue   { background-color: #ADC2EB; }
+
+/* 10. Yellow Card Content */
+.main-stat {
+    font-size: 48px;
+    font-weight: 800;
+    color: #222222;
+    margin-top: 16px;
+}
+
+.stat-subtitle {
+    font-size: 12px;
+    color: #8A7D45;
+    font-weight: bold;
+    /* This automatically pushes anything below it (the chart) to the bottom of the card */
+    margin-bottom: auto; 
+}
+
+/* 11. Mini Bar Chart */
+.bar-chart {
+    display: flex;
+    gap: 6px; /* The space between the bars */
+    align-items: flex-end; /* This forces all bars to sit flat on the bottom line */
+    margin-top: 20px;
+}
+
+.bar {
+    width: 12px;
+    background-color: #222222;
+    border-radius: 6px;
+}
+
+/* Giving each bar a specific height to mimic a data graph */
+.bar-1 { height: 24px; }
+.bar-2 { height: 40px; }
+.bar-3 { height: 16px; }
+.bar-4 { height: 32px; }
+/* 12. Card Headers & Badges */
+.card-header {
+    display: flex;
+    justify-content: space-between; /* Pushes title to left, badge to right */
+    align-items: flex-start;
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+
+.badge-pink { background-color: #E091B0; }
+
+/* 13. Pink Card Content */
+/* We reuse the yellow card's .main-stat, but need a darker subtitle! */
+.stat-subtitle-dark {
+    color: #222222; 
+    margin-bottom: 0; /* Removing the auto margin so extra stats go to bottom */
+}
+
+.extra-stats {
+    display: flex;
+    gap: 24px;
+    margin-top: auto; /* This pushes the extra stats to the very bottom of the card */
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #222222;
+}
+
+.stat-label {
+    font-size: 10px;
+    font-weight: bold;
+    color: #222222;
+}
+/* 14. Budget & Mood Badges */
+.badge-green { background-color: #8BB374; }
+.badge-blue { background-color: #8CAAE3; }
+
+/* 15. The Mood Selector Emojis */
+.mood-selector {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    margin-bottom: auto; /* Pushes the subtitle to the bottom */
+}
+
+.mood-icon {
+    width: 32px;
+    height: 32px;
+    background-color: #92AEE0;
+    border-radius: 50%; /* This makes it a perfect circle */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+}
+
+/* The dark circle for the currently selected mood */
+.mood-icon.active-mood {
+    background-color: #5959B6;
+}
+/* 16. Right Sidebar Header & Button */
+.sidebar-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.current-month {
+    font-size: 16px;
+    font-weight: bold;
+    color: #222222;
+    margin-bottom: 16px;
+}
+
+.add-event-btn {
+    background-color: #222222;
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* 17. Timeline Setup */
+.timeline-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #222222;
+    margin-bottom: 24px;
+}
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 16px;
+}
+
+.time {
+    font-size: 12px;
+    color: #888888;
+    font-weight: bold;
+    width: 60px; /* Keeps the times perfectly aligned in a column */
+    margin-top: 2px;
+}
+
+.event-details {
+    background-color: #FFFFFF;
+    padding: 16px;
+    border-radius: 16px;
+    flex: 1; /* Makes the white card fill the remaining space */
+}
+
+.event-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #222222;
+    margin-bottom: 4px;
+}
+
+.event-tag {
+    font-size: 10px;
+    color: #888888;
+    text-transform: uppercase;
+}
