@@ -175,90 +175,199 @@
 }
 
 .mood-icon {
-    width: 32px;
-    height: 32px;
+    width: 50px;
+    height: 50px;
     background-color: #92AEE0;
     border-radius: 50%; /* This makes it a perfect circle */
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 16px;
+    font-size: 30px;
 }
 
 /* The dark circle for the currently selected mood */
 .mood-icon.active-mood {
     background-color: #5959B6;
 }
-/* 16. Right Sidebar Header & Button */
+/* 16. Mini Calendar */
 .sidebar-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 40px;
+    text-align: center;
+    margin-bottom: 16px;
 }
 
 .current-month {
     font-size: 16px;
     font-weight: bold;
     color: #222222;
-    margin-bottom: 16px;
 }
 
-.add-event-btn {
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #888888;
+    margin-bottom: 8px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.cal-day {
+    aspect-ratio: 1; /* Makes them perfect squares/circles */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    color: #222222;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.cal-day:hover {
+    background-color: #DCD9D0; /* Light hover effect */
+}
+
+/* The style for when you click a day to mark it */
+.cal-day.marked {
     background-color: #222222;
     color: #FFFFFF;
-    border: none;
-    padding: 12px 32px;
-    border-radius: 24px;
-    font-size: 14px;
     font-weight: bold;
-    cursor: pointer;
-    width: 100%;
 }
 
-/* 17. Timeline Setup */
+/* 17. Divider */
+.sidebar-divider {
+    border: none;
+    border-top: 1px solid #DCD9D0;
+    margin: 32px 0;
+}
+
+/* 18. To-Do List */
 .timeline-title {
     font-size: 14px;
     font-weight: bold;
     color: #222222;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
-.timeline {
+.todo-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+#todo-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #DCD9D0;
+    border-radius: 8px;
+    font-size: 12px;
+    background-color: #FFFFFF;
+    outline: none;
+}
+
+#add-todo-btn {
+    background-color: #222222;
+    color: #FFFFFF;
+    border: none;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.todo-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
 }
 
-.timeline-item {
-    display: flex;
-    gap: 16px;
-}
-
-.time {
-    font-size: 12px;
-    color: #888888;
-    font-weight: bold;
-    width: 60px; /* Keeps the times perfectly aligned in a column */
-    margin-top: 2px;
-}
-
-.event-details {
+.todo-item {
     background-color: #FFFFFF;
-    padding: 16px;
-    border-radius: 16px;
-    flex: 1; /* Makes the white card fill the remaining space */
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.event-name {
-    font-size: 14px;
-    font-weight: bold;
+.todo-checkbox {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.todo-text {
+    font-size: 12px;
     color: #222222;
-    margin-bottom: 4px;
+    flex: 1;
 }
 
-.event-tag {
-    font-size: 10px;
+/* Strikethrough for completed tasks */
+.todo-item.done .todo-text {
+    text-decoration: line-through;
     color: #888888;
-    text-transform: uppercase;
 }
+
+.delete-btn {
+    background: none;
+    border: none;
+    color: #E091B0; /* The pink from your Figma palette! */
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+/* 19. Event Popup Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); /* Dimmed background */
+    display: none; /* Hidden until Javascript calls it! */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Keeps it on top of everything */
+}
+
+/* This class triggers the popup to show */
+.modal-overlay.active { 
+    display: flex; 
+}
+
+.modal-content {
+    background-color: #FFFFFF;
+    padding: 24px;
+    border-radius: 24px;
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-content h3 { font-size: 18px; color: #222222; }
+
+.modal-content input {
+    padding: 12px; border: 1px solid #DCD9D0; border-radius: 8px; 
+    font-size: 14px; outline: none; background-color: #F6F5F2;
+}
+
+.modal-buttons { display: flex; justify-content: flex-end; gap: 16px; margin-top: 8px; }
+
+.btn-cancel { background: none; border: none; color: #888888; cursor: pointer; font-weight: bold; font-size: 14px; }
+.btn-save { background-color: #222222; color: #FFFFFF; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 14px; }
+
+/* The little pink dot under the date to show an event exists */
+.cal-day { position: relative; }
+.event-dot {
+    position: absolute; bottom: 4px; width: 6px; height: 6px; 
+    background-color: #E091B0; border-radius: 50%;
+}
+
+.day-events-list { margin-top: 16px; border-top: 1px solid #DCD9D0; padding-top: 16px; font-size: 12px; color: #222222; display: flex; flex-direction: column; gap: 8px;}
+.mini-event { display: flex; justify-content: space-between; align-items: center; background: #F6F5F2; padding: 8px; border-radius: 8px;}
+.delete-day-event { color: #E091B0; background: none; border: none; cursor: pointer; font-weight: bold; font-size: 16px;}

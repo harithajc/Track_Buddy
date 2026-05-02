@@ -97,8 +97,11 @@
                     </div>
                     <div class="mood-selector">
                         <div class="mood-icon">😴</div>
+                        <div class="mood-icon">😊</div>
+                        <div class="mood-icon">😟</div>
+                        <div class="mood-icon">🥳</div>
                         <div class="mood-icon active-mood">😐</div>
-                        <div class="mood-icon">🔋</div>
+                        <div class="mood-icon">💀</div>
                     </div>
                     <div class="stat-subtitle stat-subtitle-dark">Current mood: tired but functional</div>
                 </div>
@@ -107,32 +110,58 @@
 
         </div> <!-- THIS CLOSES THE MAIN CONTENT (CRITICAL!) -->
 
-        <!-- 3. Right Sidebar (Now safely in its own column) -->
+<!-- 3. Right Sidebar -->
         <div class="right-sidebar">
+            
+            <!-- Mini Calendar Section -->
             <div class="sidebar-header">
                 <div class="current-month">May 2026</div>
-                <button class="add-event-btn">Add event</button>
             </div>
-            <h4 class="timeline-title">Today's Timeline</h4>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="time">09:00 AM</div>
-                    <div class="event-details">
-                        <div class="event-name">Web Dev Lecture</div>
-                        <div class="event-tag">Class</div>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="time">01:30 PM</div>
-                    <div class="event-details">
-                        <div class="event-name">Project Group Meeting</div>
-                        <div class="event-tag">Lab</div>
-                    </div>
-                </div>
+            
+            <!-- Weekday headers -->
+            <div class="calendar-weekdays">
+                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
             </div>
+            
+            <!-- Calendar Grid -->
+            <div class="calendar-grid" id="calendar-grid">
+                <!-- JavaScript will generate the days here -->
+            </div>
+
+            <!-- Divider Line -->
+            <hr class="sidebar-divider">
+
+            <!-- To-Do List Section -->
+            <h4 class="timeline-title">To-Do List</h4>
+            
+            <div class="todo-input-row">
+                <input type="text" id="todo-input" placeholder="Add a new task...">
+                <button id="add-todo-btn">Add</button>
+            </div>
+            
+            <div class="todo-list" id="todo-list">
+                <!-- JavaScript will generate the tasks here -->
+            </div>
+
         </div>
+<!-- 4. The Event Popup Modal (Hidden by default) -->
+    <div class="modal-overlay" id="event-modal">
+        <div class="modal-content">
+            <h3 id="modal-day-title">Add Event</h3>
+            
+            <input type="text" id="modal-event-name" placeholder="Event name (e.g., Physics Exam)">
+            <input type="time" id="modal-event-time">
+            
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="btn-cancel-event">Cancel</button>
+                <button class="btn-save" id="btn-save-event">Save</button>
+            </div>
 
-    </div> <!-- THIS CLOSES THE APP CONTAINER -->
-
+            <!-- List of events already saved for this day -->
+            <div class="day-events-list" id="day-events-list"></div>
+        </div>
+    </div>
+<!-- Connect our JavaScript Engine -->
+    <script src="script.js"></script>
 </body>
 </html>
