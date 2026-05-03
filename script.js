@@ -275,12 +275,44 @@ menuItems.forEach(item => {
 });
 
 // ==========================================
-// 8. THE WEEKLY PLANNER ENGINE
+// 8. THE WEEKLY PLANNER ENGINE (COLOR-CODED)
 // ==========================================
 const plannerGrid = document.getElementById('weekly-planner-grid');
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const startHour = 8; // 8 AM
-const endHour = 22; // 10 PM
+const startHour = 8; 
+const endHour = 22; 
+
+let weeklySchedule = JSON.parse(localStorage.getItem('trackBuddyWeekly')) || {};
+
+// 1. The Color Dictionary (Using your Figma palette!)
+const subjectColors = {
+    "math": "#8CAAE3",      // Blue
+    "calculus": "#8CAAE3",
+    "algebra": "#8CAAE3",
+    "science": "#a8d190",   // Green
+    "physics": "#acd098",
+    "chemistry": "#b1d39d",
+    "biology": "#afd39a",
+    "kannada": "#dccea2",   // Yellow
+    "clab": "#F4A8C5",
+    "physics lab":"#F4A8C5",   // Pink
+    "data": "#222222",      // Dark Grey for CS/Data
+    "ect": "#a8e8bb",
+    "ai": "#e0a5a5",
+    "c": "#d16f6f",
+    "default": "#db94b0"    // Default Pink if it doesn't recognize the word
+};
+
+// 2. The Keyword Scanner Function
+function getColorForEvent(eventName) {
+    const lowerName = eventName.toLowerCase(); // Convert to lowercase so "Math" and "math" both work
+    
+    // Scan the name for any of our keywords
+    for (const [keyword, color] of Object.entries(subjectColors)) {
+        if (lowerName.includes(keyword)) return color;
+    }
+    return subjectColors["default"];
+}
 
 function renderWeeklyPlanner() {
     if (!plannerGrid) return;
@@ -305,13 +337,45 @@ function renderWeeklyPlanner() {
         for (let h = startHour; h <= endHour; h++) {
             const slot = document.createElement('div');
             slot.classList.add('time-slot');
+            const slotId = `${day}-${h}`;
+
+            // 3. Apply the Dynamic Colors!
+            if (weeklySchedule[slotId]) {
+                const eventName = weeklySchedule[slotId];
+                const bgColor = getColorForEvent(eventName); // Run the scanner!
+                
+                slot.classList.add('filled-slot'); 
+                slot.style.backgroundColor = bgColor; // Inject the color directly into the HTML
+                
+                // If the background is dark grey, make the text white so we can read it!
+                if (bgColor === "#222222") slot.style.color = "#FFFFFF";
+
+                slot.innerHTML = `<div class="saved-event">${eventName}</div>`;
+            }
+
             slot.addEventListener('click', () => {
-                alert(`You clicked ${day} at ${h % 12 || 12}:00 ${h >= 12 ? 'PM' : 'AM'}! Next up: letting you save classes here.`);
+                if (weeklySchedule[slotId]) {
+                    if(confirm(`Remove "${weeklySchedule[slotId]}" from ${day} at ${h % 12 || 12} ${h >= 12 ? 'PM' : 'AM'}?`)) {
+                        delete weeklySchedule[slotId];
+                        saveAndRenderSchedule();
+                    }
+                } else {
+                    const eventName = prompt(`Add class/event for ${day} at ${h % 12 || 12} ${h >= 12 ? 'PM' : 'AM'}:`);
+                    if (eventName && eventName.trim() !== "") {
+                        weeklySchedule[slotId] = eventName.trim();
+                        saveAndRenderSchedule();
+                    }
+                }
             });
             dayCol.appendChild(slot);
         }
         plannerGrid.appendChild(dayCol);
     });
+}
+
+function saveAndRenderSchedule() {
+    localStorage.setItem('trackBuddyWeekly', JSON.stringify(weeklySchedule));
+    renderWeeklyPlanner();
 }
 
 // ==========================================
