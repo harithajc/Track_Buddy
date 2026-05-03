@@ -13,14 +13,33 @@
     <!-- This container holds the entire app -->
     <div class="app-container">
         
-        <!-- 1. The Dark Left Sidebar -->
+      <!-- 1. The Dark Left Sidebar -->
         <div class="left-sidebar">
-            <h1 class="logo">Track Buddy</h1>
-            <div class="menu-item active">Dashboard</div>
-            <div class="menu-item">Schedule</div>
-            <div class="menu-item">Study</div>
-            <div class="menu-item">Tasks</div>
-            <div class="menu-item">Budget</div>
+            
+            <!-- Top Navigation Links -->
+            <div class="sidebar-top">
+                <h1 class="logo">Track Buddy</h1>
+                <div class="menu-item active" data-page="Dashboard">Dashboard</div>
+                <div class="menu-item" data-page="Schedule">Schedule</div>
+                <div class="menu-item" data-page="Study">Study</div>
+                <div class="menu-item" data-page="Tasks">Tasks</div>
+                <div class="menu-item" data-page="Budget">Budget</div>
+            </div>
+
+            <!-- Bottom Extra Elements -->
+            <div class="sidebar-bottom">
+                <div class="menu-item" data-page="Settings">Settings</div>
+                
+                <!-- User Profile Badge -->
+                <div class="user-profile">
+                    <div class="avatar">H</div>
+                    <div class="user-info">
+                        <div class="user-name">Haritha</div>
+                        <div class="user-tier">Student Dev</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- 2. The Main Cream-Colored Area (For the Grid) -->
@@ -28,94 +47,84 @@
         <div class="main-content">
             
             <!-- The Greeting -->
+            <!-- The Greeting -->
             <div class="greeting-section">
-                <h2 class="greeting-title">Good afternoon, Haritha</h2>
-                <p class="greeting-subtitle">You have 3 tasks today, 4 deadlines this week, and 2 things looking directly at you.</p>
+                <h2 class="greeting-title" id="greeting-title">Good afternoon, Haritha</h2>
+                <p class="greeting-subtitle" id="greeting-subtitle">You have 3 tasks today...</p>
             </div>
 
-            <!-- The 2x2 Card Grid -->
+<!-- The Grid Container -->
             <div class="cards-grid">
+                
+                <!-- YELLOW CARD (Dynamic Status) -->
                 <div class="card card-yellow">
                     <h3 class="card-title">Today's Status</h3>
-    
-                    <!-- The Big Number and Subtitle -->
-                    <div class="main-stat">51%</div>
-                    <div class="stat-subtitle">Academic survival chance</div>
-                    
-                    <!-- The Mini Bar Chart -->
-                    <div class="bar-chart">
+                    <div class="main-stat" id="status-percent">0%</div>
+                    <div class="stat-subtitle">Task completion rate</div>
+                    <div class="bar-chart" id="status-bars">
                         <div class="bar bar-1"></div>
                         <div class="bar bar-2"></div>
                         <div class="bar bar-3"></div>
                         <div class="bar bar-4"></div>
                     </div>
                 </div>
-                
-                
+
+                <!-- PINK CARD (Focus Timer) -->
                 <div class="card card-pink">
-                    <!-- Top row with Title and Badge -->
                     <div class="card-header">
-                        <h3 class="card-title">Next Class</h3>
-                        <div class="badge badge-pink">this week</div>
+                        <h3 class="card-title">Focus Timer</h3>
+                        <div class="badge badge-pink">study</div>
                     </div>
-                    
-                    <!-- The Main Progress Stat -->
-                    <div class="main-stat">59%</div>
-                    <div class="stat-subtitle stat-subtitle-dark">AVERAGE PROGRESS</div>
-                    
-                    <!-- The Extra Stats at the Bottom -->
-                    <div class="extra-stats">
-                        <div class="stat-box">
-                            <div class="stat-number">3</div>
-                            <div class="stat-label">MODULES</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-number">1</div>
-                            <div class="stat-label">NEED HELP</div>
-                        </div>
+                    <div class="timer-display" id="timer-display">25:00</div>
+                    <div class="timer-controls">
+                        <input type="number" id="timer-input" placeholder="Min" min="1" max="120">
+                        <button id="btn-start-timer">Start</button>
+                        <button id="btn-reset-timer">Reset</button>
                     </div>
                 </div>
-            
 
-                <!-- GREEN CARD -->
+                <!-- GREEN CARD (Budget Tracker) -->
                 <div class="card card-green">
                     <div class="card-header">
                         <h3 class="card-title">Budget</h3>
                         <div class="badge badge-green">this month</div>
                     </div>
-                    <!-- Using the same stat styles we already created! -->
-                    <div class="main-stat">₹ 1,500</div>
-                    <div class="stat-subtitle stat-subtitle-dark">remaining this month</div>
+                    <div class="main-stat" id="budget-display">₹ 0</div>
+                    <div class="budget-controls">
+                        <input type="number" id="expense-input" placeholder="Spend ₹...">
+                        <button id="btn-add-expense">Add</button>
+                        <button id="btn-reset-expense">Reset</button> <!-- NEW BUTTON -->
+                    </div>
                 </div>
 
-                <!-- BLUE CARD -->
-                <!-- BLUE CARD -->
+                <!-- BLUE CARD (Mood Tracker) -->
                 <div class="card card-blue">
                     <div class="card-header">
                         <h3 class="card-title">Mood</h3>
                         <div class="badge badge-blue">today</div>
                     </div>
-                    <div class="mood-selector">
-                        <div class="mood-icon">😴</div>
-                        <div class="mood-icon">😊</div>
-                        <div class="mood-icon">😟</div>
-                        <div class="mood-icon">🥳</div>
-                        <div class="mood-icon active-mood">😐</div>
-                        <div class="mood-icon">💀</div>
+                    <div class="mood-selector" id="mood-selector">
+                        <div class="mood-icon" data-mood="😴">😴</div>
+                        <div class="mood-icon" data-mood="😭">😭</div>
+                        <div class="mood-icon" data-mood="😄">😄</div>
+                        <div class="mood-icon" data-mood="🥳">🥳</div>
+                        <div class="mood-icon" data-mood="💀">💀</div>
+                        <div class="mood-icon" data-mood="🤔">🤔</div>
+                        <div class="mood-icon" data-mood="🤒">🤒</div>
                     </div>
-                    <div class="stat-subtitle stat-subtitle-dark">Current mood: tired but functional</div>
+                    <div class="stat-subtitle stat-subtitle-dark" id="mood-text">Current mood: select one</div>
                 </div>
 
-            </div> <!-- THIS CLOSES THE CARDS GRID -->
-
-        </div> <!-- THIS CLOSES THE MAIN CONTENT (CRITICAL!) -->
-
+            </div> <!-- This important tag closes the Grid! -->
+        </div>
 <!-- 3. Right Sidebar -->
         <div class="right-sidebar">
             
             <!-- Mini Calendar Section -->
             <div class="sidebar-header">
-                <div class="current-month">May 2026</div>
+                <button id="prev-month-btn" class="month-nav-btn">&lt;</button>
+                <div class="current-month" id="current-month-display">May 2026</div>
+                <button id="next-month-btn" class="month-nav-btn">&gt;</button>
             </div>
             
             <!-- Weekday headers -->
