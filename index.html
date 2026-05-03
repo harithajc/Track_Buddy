@@ -3,19 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    
-    <!-- This line links our HTML skeleton to our CSS paint! -->
+    <title>Track Buddy</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- This container holds the entire app -->
     <div class="app-container">
         
-      <!-- 1. The Dark Left Sidebar -->
+        <!-- 1. The Dark Left Sidebar -->
         <div class="left-sidebar">
-            
             <!-- Top Navigation Links -->
             <div class="sidebar-top">
                 <h1 class="logo">Track Buddy</h1>
@@ -29,7 +25,6 @@
             <!-- Bottom Extra Elements -->
             <div class="sidebar-bottom">
                 <div class="menu-item" data-page="Settings">Settings</div>
-                
                 <!-- User Profile Badge -->
                 <div class="user-profile">
                     <div class="avatar">H</div>
@@ -39,138 +34,130 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- 2. The Main Cream-Colored Area (For the Grid) -->
-        <!-- 2. The Main Cream-Colored Area (For the Grid) -->
-        <div class="main-content">
+        <!-- ======================================= -->
+        <!-- VIEW 1: DASHBOARD -->
+        <!-- ======================================= -->
+        <div id="view-Dashboard" class="view-section active">
             
-            <!-- The Greeting -->
-            <!-- The Greeting -->
-            <div class="greeting-section">
-                <h2 class="greeting-title" id="greeting-title">Good afternoon, Haritha</h2>
-                <p class="greeting-subtitle" id="greeting-subtitle">You have 3 tasks today...</p>
+            <div class="main-content">
+                <div class="greeting-section">
+                    <h2 class="greeting-title" id="greeting-title">Good afternoon, Haritha</h2>
+                    <p class="greeting-subtitle" id="greeting-subtitle">Loading your data...</p>
+                </div>
+
+                <div class="cards-grid">
+                    
+                    <div class="card card-yellow">
+                        <h3 class="card-title">Today's Status</h3>
+                        <div class="main-stat" id="status-percent">0%</div>
+                        <div class="stat-subtitle">Task completion rate</div>
+                        <div class="bar-chart" id="status-bars">
+                            <div class="bar bar-1"></div>
+                            <div class="bar bar-2"></div>
+                            <div class="bar bar-3"></div>
+                            <div class="bar bar-4"></div>
+                        </div>
+                    </div>
+
+                    <div class="card card-pink">
+                        <div class="card-header">
+                            <h3 class="card-title">Focus Timer</h3>
+                            <div class="badge badge-pink">study</div>
+                        </div>
+                        <div class="timer-display" id="timer-display">00:00</div>
+                        <div class="timer-controls">
+                            <input type="number" id="timer-input" placeholder="Goal" min="1" max="120">
+                            <button id="btn-start-timer">Start</button>
+                            <button id="btn-reset-timer">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="card card-green">
+                        <div class="card-header">
+                            <h3 class="card-title">Expenses</h3>
+                            <div class="badge badge-green">this month</div>
+                        </div>
+                        <div class="main-stat" id="budget-display">₹ 0</div>
+                        <div class="budget-controls">
+                            <input type="number" id="expense-input" placeholder="Spend ₹...">
+                            <button id="btn-add-expense">Add</button>
+                            <button id="btn-reset-expense">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="card card-blue">
+                        <div class="card-header">
+                            <h3 class="card-title">Mood</h3>
+                            <div class="badge badge-blue">today</div>
+                        </div>
+                        <div class="mood-selector" id="mood-selector">
+                            <div class="mood-icon" data-mood="😴">😴</div>
+                            <div class="mood-icon" data-mood="😭">😭</div>
+                            <div class="mood-icon" data-mood="😄">😄</div>
+                            <div class="mood-icon" data-mood="🥳">🥳</div>
+                            <div class="mood-icon" data-mood="💀">💀</div>
+                            <div class="mood-icon" data-mood="🤔">🤔</div>
+                            <div class="mood-icon" data-mood="🤒">🤒</div>
+                        </div>
+                        <div class="stat-subtitle stat-subtitle-dark" id="mood-text">Current mood: select one</div>
+                    </div>
+                </div> 
             </div>
 
-<!-- The Grid Container -->
-            <div class="cards-grid">
+            <div class="right-sidebar">
+                <div class="sidebar-header">
+                    <button id="prev-month-btn" class="month-nav-btn">&lt;</button>
+                    <div class="current-month" id="current-month-display">Month Year</div>
+                    <button id="next-month-btn" class="month-nav-btn">&gt;</button>
+                </div>
                 
-                <!-- YELLOW CARD (Dynamic Status) -->
-                <div class="card card-yellow">
-                    <h3 class="card-title">Today's Status</h3>
-                    <div class="main-stat" id="status-percent">0%</div>
-                    <div class="stat-subtitle">Task completion rate</div>
-                    <div class="bar-chart" id="status-bars">
-                        <div class="bar bar-1"></div>
-                        <div class="bar bar-2"></div>
-                        <div class="bar bar-3"></div>
-                        <div class="bar bar-4"></div>
-                    </div>
+                <div class="calendar-weekdays">
+                    <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
                 </div>
+                
+                <div class="calendar-grid" id="calendar-grid"></div>
 
-                <!-- PINK CARD (Focus Timer) -->
-                <div class="card card-pink">
-                    <div class="card-header">
-                        <h3 class="card-title">Focus Timer</h3>
-                        <div class="badge badge-pink">study</div>
-                    </div>
-                    <div class="timer-display" id="timer-display">25:00</div>
-                    <div class="timer-controls">
-                        <input type="number" id="timer-input" placeholder="Min" min="1" max="120">
-                        <button id="btn-start-timer">Start</button>
-                        <button id="btn-reset-timer">Reset</button>
-                    </div>
+                <hr class="sidebar-divider">
+
+                <h4 class="timeline-title">To-Do List</h4>
+                <div class="todo-input-row">
+                    <input type="text" id="todo-input" placeholder="Add a new task...">
+                    <button id="add-todo-btn">Add</button>
                 </div>
+                <div class="todo-list" id="todo-list"></div>
+            </div>
 
-                <!-- GREEN CARD (Budget Tracker) -->
-                <div class="card card-green">
-                    <div class="card-header">
-                        <h3 class="card-title">Budget</h3>
-                        <div class="badge badge-green">this month</div>
-                    </div>
-                    <div class="main-stat" id="budget-display">₹ 0</div>
-                    <div class="budget-controls">
-                        <input type="number" id="expense-input" placeholder="Spend ₹...">
-                        <button id="btn-add-expense">Add</button>
-                        <button id="btn-reset-expense">Reset</button> <!-- NEW BUTTON -->
-                    </div>
-                </div>
+        </div> <!-- Closes Dashboard View -->
 
-                <!-- BLUE CARD (Mood Tracker) -->
-                <div class="card card-blue">
-                    <div class="card-header">
-                        <h3 class="card-title">Mood</h3>
-                        <div class="badge badge-blue">today</div>
-                    </div>
-                    <div class="mood-selector" id="mood-selector">
-                        <div class="mood-icon" data-mood="😴">😴</div>
-                        <div class="mood-icon" data-mood="😭">😭</div>
-                        <div class="mood-icon" data-mood="😄">😄</div>
-                        <div class="mood-icon" data-mood="🥳">🥳</div>
-                        <div class="mood-icon" data-mood="💀">💀</div>
-                        <div class="mood-icon" data-mood="🤔">🤔</div>
-                        <div class="mood-icon" data-mood="🤒">🤒</div>
-                    </div>
-                    <div class="stat-subtitle stat-subtitle-dark" id="mood-text">Current mood: select one</div>
-                </div>
-
-            </div> <!-- This important tag closes the Grid! -->
+        <!-- ======================================= -->
+        <!-- VIEW 2: SCHEDULE (Weekly Planner) -->
+        <!-- ======================================= -->
+        <div id="view-Schedule" class="view-section">
+            <div class="planner-header">
+                <h2 class="greeting-title">Weekly Planner</h2>
+                <p class="greeting-subtitle">Your entire week at a glance.</p>
+            </div>
+            <div class="planner-grid" id="weekly-planner-grid"></div>
         </div>
-<!-- 3. Right Sidebar -->
-        <div class="right-sidebar">
-            
-            <!-- Mini Calendar Section -->
-            <div class="sidebar-header">
-                <button id="prev-month-btn" class="month-nav-btn">&lt;</button>
-                <div class="current-month" id="current-month-display">May 2026</div>
-                <button id="next-month-btn" class="month-nav-btn">&gt;</button>
-            </div>
-            
-            <!-- Weekday headers -->
-            <div class="calendar-weekdays">
-                <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
-            </div>
-            
-            <!-- Calendar Grid -->
-            <div class="calendar-grid" id="calendar-grid">
-                <!-- JavaScript will generate the days here -->
-            </div>
 
-            <!-- Divider Line -->
-            <hr class="sidebar-divider">
+    </div> <!-- Closes app-container -->
 
-            <!-- To-Do List Section -->
-            <h4 class="timeline-title">To-Do List</h4>
-            
-            <div class="todo-input-row">
-                <input type="text" id="todo-input" placeholder="Add a new task...">
-                <button id="add-todo-btn">Add</button>
-            </div>
-            
-            <div class="todo-list" id="todo-list">
-                <!-- JavaScript will generate the tasks here -->
-            </div>
-
-        </div>
-<!-- 4. The Event Popup Modal (Hidden by default) -->
+    <!-- Event Popup Modal -->
     <div class="modal-overlay" id="event-modal">
         <div class="modal-content">
             <h3 id="modal-day-title">Add Event</h3>
-            
             <input type="text" id="modal-event-name" placeholder="Event name (e.g., Physics Exam)">
             <input type="time" id="modal-event-time">
-            
             <div class="modal-buttons">
                 <button class="btn-cancel" id="btn-cancel-event">Cancel</button>
                 <button class="btn-save" id="btn-save-event">Save</button>
             </div>
-
-            <!-- List of events already saved for this day -->
             <div class="day-events-list" id="day-events-list"></div>
         </div>
     </div>
-<!-- Connect our JavaScript Engine -->
+
     <script src="script.js"></script>
 </body>
 </html>

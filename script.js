@@ -5,7 +5,6 @@ const calendarGrid = document.getElementById('calendar-grid');
 const currentMonthDisplay = document.getElementById('current-month-display');
 const prevMonthBtn = document.getElementById('prev-month-btn');
 const nextMonthBtn = document.getElementById('next-month-btn');
-
 const modalOverlay = document.getElementById('event-modal');
 const modalDayTitle = document.getElementById('modal-day-title');
 const eventNameInput = document.getElementById('modal-event-name');
@@ -14,42 +13,27 @@ const btnSaveEvent = document.getElementById('btn-save-event');
 const btnCancelEvent = document.getElementById('btn-cancel-event');
 const dayEventsList = document.getElementById('day-events-list');
 
-// We use V3 for the memory key because we are upgrading how data is saved!
 let calendarEvents = JSON.parse(localStorage.getItem('trackBuddyEventsV3')) || {};
-
-// Grab the REAL current date from the computer
 let viewingDate = new Date(); 
-let currentlySelectedDateKey = null; 
+let currentlySelectedDateKey = null;
 let currentlySelectedDayNumber = null;
-
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function renderCalendar() {
     calendarGrid.innerHTML = ''; 
-    
-    // Figure out exactly what year and month we are looking at
     const year = viewingDate.getFullYear();
     const month = viewingDate.getMonth();
-    
-    // Update the text at the top (e.g., "June 2026")
     currentMonthDisplay.textContent = `${monthNames[month]} ${year}`;
     
-    // Math to figure out what day the 1st falls on, and how many days are in the month
     const firstDayOfWeek = new Date(year, month, 1).getDay();
     const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
 
-    // Draw empty slots for the days before the 1st
-    for (let i = 0; i < firstDayOfWeek; i++) {
-        calendarGrid.appendChild(document.createElement('div'));
-    }
+    for (let i = 0; i < firstDayOfWeek; i++) calendarGrid.appendChild(document.createElement('div'));
 
-    // Draw the actual days
     for (let day = 1; day <= totalDaysInMonth; day++) {
         const dayElement = document.createElement('div');
         dayElement.classList.add('cal-day');
         dayElement.textContent = day;
-
-        // Create a unique key (e.g., "2026-5-15") so May 15 and June 15 don't mix!
         const dateKey = `${year}-${month}-${day}`;
 
         if (calendarEvents[dateKey] && calendarEvents[dateKey].length > 0) {
@@ -58,22 +42,13 @@ function renderCalendar() {
             dayElement.appendChild(dot);
             dayElement.classList.add('marked');
         }
-
         dayElement.addEventListener('click', () => openModal(day, dateKey));
         calendarGrid.appendChild(dayElement);
     }
 }
 
-// Wire up the Arrow Buttons!
-prevMonthBtn.addEventListener('click', () => {
-    viewingDate.setMonth(viewingDate.getMonth() - 1);
-    renderCalendar();
-});
-
-nextMonthBtn.addEventListener('click', () => {
-    viewingDate.setMonth(viewingDate.getMonth() + 1);
-    renderCalendar();
-});
+prevMonthBtn.addEventListener('click', () => { viewingDate.setMonth(viewingDate.getMonth() - 1); renderCalendar(); });
+nextMonthBtn.addEventListener('click', () => { viewingDate.setMonth(viewingDate.getMonth() + 1); renderCalendar(); });
 
 function openModal(day, dateKey) {
     currentlySelectedDateKey = dateKey;
@@ -102,8 +77,7 @@ function renderDayEventsList() {
 window.deleteEvent = function(dateKey, eventIndex) {
     calendarEvents[dateKey].splice(eventIndex, 1);
     localStorage.setItem('trackBuddyEventsV3', JSON.stringify(calendarEvents));
-    renderDayEventsList(); renderCalendar();
-    if (typeof updateGreeting === "function") updateGreeting(); // Updates the top text if you delete an event
+    renderDayEventsList(); renderCalendar(); updateGreeting();
 };
 
 btnCancelEvent.addEventListener('click', () => modalOverlay.classList.remove('active'));
@@ -124,10 +98,10 @@ btnSaveEvent.addEventListener('click', () => {
         if (!calendarEvents[currentlySelectedDateKey]) calendarEvents[currentlySelectedDateKey] = [];
         calendarEvents[currentlySelectedDateKey].push({ name: name, time: displayTime });
         localStorage.setItem('trackBuddyEventsV3', JSON.stringify(calendarEvents));
-        modalOverlay.classList.remove('active'); renderCalendar(); 
-        if (typeof updateGreeting === "function") updateGreeting(); // Updates the top text when you add an event
+        modalOverlay.classList.remove('active'); renderCalendar(); updateGreeting();
     }
 });
+
 // ==========================================
 // 2. THE TO-DO LIST & DYNAMIC STATUS ENGINE
 // ==========================================
@@ -137,10 +111,7 @@ const todoList = document.getElementById('todo-list');
 const statusPercent = document.getElementById('status-percent');
 const statusBars = document.querySelectorAll('.bar');
 
-let myTasks = JSON.parse(localStorage.getItem('trackBuddyTasks')) || [
-    { id: 1, text: "Finish Figma layout", done: true },
-    { id: 2, text: "Build HTML/CSS", done: false }
-];
+let myTasks = JSON.parse(localStorage.getItem('trackBuddyTasks')) || [];
 
 function updateStatusCard() {
     if (myTasks.length === 0) {
@@ -148,14 +119,9 @@ function updateStatusCard() {
         statusBars.forEach(bar => bar.style.height = '10px');
         return;
     }
-    // Calculate percentage based on checkboxes
     const completed = myTasks.filter(t => t.done).length;
     const percent = Math.round((completed / myTasks.length) * 100);
     statusPercent.textContent = `${percent}%`;
-
-  
-    // Animate the bar chart based on the percentage!
-    // Multipliers lowered drastically so the tallest bar is only 50px
     statusBars[0].style.height = `${Math.max(12, percent * 0.2)}px`;
     statusBars[1].style.height = `${Math.max(12, percent * 0.4)}px`;
     statusBars[2].style.height = `${Math.max(12, percent * 0.3)}px`;
@@ -181,30 +147,21 @@ function renderTasks() {
 
 function saveAndRenderTasks() {
     localStorage.setItem('trackBuddyTasks', JSON.stringify(myTasks));
-    renderTasks();
-    updateStatusCard(); 
-    updateGreeting(); // Updates the greeting whenever tasks change!
+    renderTasks(); updateStatusCard(); updateGreeting();
 }
 
-addTodoBtn.addEventListener('click', function() {
+addTodoBtn.addEventListener('click', () => {
     const text = todoInput.value.trim();
-    if (text !== '') {
-        myTasks.push({ id: Date.now(), text: text, done: false });
-        todoInput.value = ''; saveAndRenderTasks();
-    }
+    if (text !== '') { myTasks.push({ id: Date.now(), text: text, done: false }); todoInput.value = ''; saveAndRenderTasks(); }
 });
 todoInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addTodoBtn.click(); });
 
-
 // ==========================================
-// 3. THE FOCUS TIMER ENGINE (Pink Card - Stopwatch Mode)
+// 3. THE FOCUS TIMER ENGINE
 // ==========================================
-let timerInterval;
-let timeElapsed = 0; // We start fresh at exactly 0 seconds!
-let isRunning = false;
-
+let timerInterval; let timeElapsed = 0; let isRunning = false;
 const timerDisplay = document.getElementById('timer-display');
-const timerInput = document.getElementById('timer-input'); // Now acts as an optional Goal
+const timerInput = document.getElementById('timer-input');
 const btnStartTimer = document.getElementById('btn-start-timer');
 const btnResetTimer = document.getElementById('btn-reset-timer');
 
@@ -215,128 +172,76 @@ function updateTimerDisplay() {
 }
 
 btnStartTimer.addEventListener('click', () => {
-    if (isRunning) {
-        // Pause the timer
-        clearInterval(timerInterval);
-        btnStartTimer.textContent = 'Resume';
-        isRunning = false;
-    } else {
-        // Start or Resume counting UP
+    if (isRunning) { clearInterval(timerInterval); btnStartTimer.textContent = 'Resume'; isRunning = false; } 
+    else {
         timerInterval = setInterval(() => {
-            timeElapsed++; // Adds 1 second
-            updateTimerDisplay();
-
-            // Check if the user set a goal in the input box!
+            timeElapsed++; updateTimerDisplay();
             const goalMinutes = parseInt(timerInput.value);
-            if (goalMinutes && timeElapsed === goalMinutes * 60) {
-                alert(`Great job! You reached your ${goalMinutes}-minute focus goal!`);
-            }
+            if (goalMinutes && timeElapsed === goalMinutes * 60) alert(`Great job! Reached ${goalMinutes}-min focus goal!`);
         }, 1000);
-        btnStartTimer.textContent = 'Pause';
-        isRunning = true;
+        btnStartTimer.textContent = 'Pause'; isRunning = true;
     }
 });
 
 btnResetTimer.addEventListener('click', () => {
-    // Stop the timer and reset everything back to zero
-    clearInterval(timerInterval);
-    isRunning = false;
-    btnStartTimer.textContent = 'Start';
-    timeElapsed = 0; // Back to zero!
-    updateTimerDisplay();
+    clearInterval(timerInterval); isRunning = false; btnStartTimer.textContent = 'Start';
+    timeElapsed = 0; updateTimerDisplay();
 });
 
-// Force the display to show 00:00 as soon as the page loads
-updateTimerDisplay();
-
-
 // ==========================================
-// 4. THE EXPENSE ENGINE (Green Card)
+// 4. THE EXPENSE ENGINE
 // ==========================================
 let totalSpent = parseInt(localStorage.getItem('trackBuddySpent')) || 0; 
 const budgetDisplay = document.getElementById('budget-display');
 const expenseInput = document.getElementById('expense-input');
 const btnAddExpense = document.getElementById('btn-add-expense');
-const btnResetExpense = document.getElementById('btn-reset-expense'); // Grabbing our new button!
+const btnResetExpense = document.getElementById('btn-reset-expense');
 
-function renderExpenses() {
-    budgetDisplay.textContent = `₹ ${totalSpent.toLocaleString()}`;
-}
+function renderExpenses() { budgetDisplay.textContent = `₹ ${totalSpent.toLocaleString()}`; }
 
 btnAddExpense.addEventListener('click', () => {
     const spentAmount = parseInt(expenseInput.value);
     if (spentAmount && spentAmount > 0) {
-        totalSpent += spentAmount; 
-        localStorage.setItem('trackBuddySpent', totalSpent); 
-        expenseInput.value = ''; 
-        renderExpenses(); 
+        totalSpent += spentAmount; localStorage.setItem('trackBuddySpent', totalSpent); 
+        expenseInput.value = ''; renderExpenses(); 
     }
 });
-
-// --- NEW RESET LOGIC ---
 btnResetExpense.addEventListener('click', () => {
-    // A built-in browser confirmation box to prevent accidental clicks
-    if (confirm("Are you sure you want to reset your expenses to zero?")) {
-        totalSpent = 0; // Reset the math
-        localStorage.setItem('trackBuddySpent', totalSpent); // Save the zero to memory
-        renderExpenses(); // Update the screen
-    }
+    if (confirm("Reset expenses to zero?")) { totalSpent = 0; localStorage.setItem('trackBuddySpent', totalSpent); renderExpenses(); }
 });
 
 // ==========================================
-// 5. THE MOOD ENGINE (Blue Card)
+// 5. THE MOOD ENGINE
 // ==========================================
 const moodIcons = document.querySelectorAll('.mood-icon');
 const moodText = document.getElementById('mood-text');
-const moodMessages = {
-    "😴": "tired and sleepy",
-    "😭": "absolutely defeated",
-    "😄": "having a pretty good day",
-    "🥳": "crushing it today!",
-    "💀": "dead inside (academic weapon down)",
-    "🤔": "slightly confused but trying",
-    "🤒": "under the weather"
-};
+const moodMessages = { "😴": "tired but functional", "😭": "absolutely defeated", "😄": "having a pretty good day", "🥳": "crushing it today!", "💀": "dead inside (academic weapon down)", "🤔": "slightly confused but trying", "🤒": "under the weather" };
 let savedMood = localStorage.getItem('trackBuddyMood') || "😐";
 
 function setMood(moodEmoji) {
-    moodIcons.forEach(icon => {
-        icon.classList.remove('active-mood');
-        if (icon.dataset.mood === moodEmoji) icon.classList.add('active-mood');
-    });
+    moodIcons.forEach(icon => { icon.classList.remove('active-mood'); if (icon.dataset.mood === moodEmoji) icon.classList.add('active-mood'); });
     moodText.textContent = `Current mood: ${moodMessages[moodEmoji] || 'unknown'}`;
     localStorage.setItem('trackBuddyMood', moodEmoji);
 }
-
-moodIcons.forEach(icon => {
-    icon.addEventListener('click', () => setMood(icon.dataset.mood));
-});
+moodIcons.forEach(icon => icon.addEventListener('click', () => setMood(icon.dataset.mood)));
 
 // ==========================================
-// 6. THE DYNAMIC GREETING ENGINE
+// 6. THE GREETING ENGINE
 // ==========================================
 const greetingTitle = document.getElementById('greeting-title');
 const greetingSubtitle = document.getElementById('greeting-subtitle');
 
 function updateGreeting() {
-    // 1. Figure out the time of day
     const currentHour = new Date().getHours();
     let timeOfDay = "evening";
     if (currentHour < 12) timeOfDay = "morning";
     else if (currentHour < 18) timeOfDay = "afternoon";
-
     greetingTitle.textContent = `Good ${timeOfDay}, Haritha`;
 
-    // 2. Count pending tasks (tasks where 'done' is false)
     const pendingTasks = myTasks.filter(task => !task.done).length;
-
-    // 3. Count total upcoming events saved in the calendar
     let totalEvents = 0;
-    for (const day in calendarEvents) {
-        totalEvents += calendarEvents[day].length;
-    }
+    for (const day in calendarEvents) { totalEvents += calendarEvents[day].length; }
 
-    // 4. A few quirky randomized messages for the end of the sentence
     const quirkyMessages = [
         "and 2 things looking directly at you.",
         "time to activate academic weapon mode.",
@@ -345,42 +250,143 @@ function updateGreeting() {
         "and your budget is looking healthy."
     ];
     const randomQuirk = quirkyMessages[Math.floor(Math.random() * quirkyMessages.length)];
-
-    // 5. Update the text on the screen!
     greetingSubtitle.textContent = `You have ${pendingTasks} pending tasks, ${totalEvents} upcoming events, ${randomQuirk}`;
 }
+
 // ==========================================
-// 7. THE SIDEBAR NAVIGATION ENGINE
+// 7. THE SIDEBAR NAVIGATION ENGINE (SPA UPGRADE)
 // ==========================================
 const menuItems = document.querySelectorAll('.menu-item');
+const viewSections = document.querySelectorAll('.view-section');
 
 menuItems.forEach(item => {
     item.addEventListener('click', () => {
-        // 1. Remove the 'active' highlight from all buttons
-        menuItems.forEach(nav => nav.classList.remove('active'));
-        
-        // 2. Add the 'active' highlight to the one we just clicked
-        item.classList.add('active');
-
-        // 3. Check which page they are trying to go to
         const pageTarget = item.dataset.page;
-        
-        // If it's not the dashboard, let them know it's under construction!
-        if (pageTarget !== 'Dashboard') {
+        const targetView = document.getElementById(`view-${pageTarget}`);
+
+        if (targetView) {
+            menuItems.forEach(nav => nav.classList.remove('active'));
+            item.classList.add('active');
+            viewSections.forEach(view => view.classList.remove('active'));
+            targetView.classList.add('active');
+        } 
+        else if (pageTarget !== 'Settings') {
             alert(`The ${pageTarget} view is currently locked. You need to build the HTML for it next!`);
-            
-            // Force the highlight back to the Dashboard after a short delay
-            setTimeout(() => {
-                item.classList.remove('active');
-                document.querySelector('[data-page="Dashboard"]').classList.add('active');
-            }, 500);
         }
     });
 });
+
+// ==========================================
+// 8. THE WEEKLY PLANNER ENGINE (COLOR-CODED)
+// ==========================================
+const plannerGrid = document.getElementById('weekly-planner-grid');
+const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const startHour = 8; 
+const endHour = 22; 
+
+let weeklySchedule = JSON.parse(localStorage.getItem('trackBuddyWeekly')) || {};
+
+// 1. The Color Dictionary (Using your Figma palette!)
+const subjectColors = {
+    "math": "#8CAAE3",      // Blue
+    "calculus": "#8CAAE3",
+    "algebra": "#8CAAE3",
+    "science": "#a8d190",   // Green
+    "physics": "#acd098",
+    "chemistry": "#b1d39d",
+    "biology": "#afd39a",
+    "kannada": "#dccea2",   // Yellow
+    "clab": "#F4A8C5",
+    "physics lab":"#F4A8C5",   // Pink
+    "data": "#222222",      // Dark Grey for CS/Data
+    "ect": "#a8e8bb",
+    "ai": "#e0a5a5",
+    "c": "#d16f6f",
+    "default": "#db94b0"    // Default Pink if it doesn't recognize the word
+};
+
+// 2. The Keyword Scanner Function
+function getColorForEvent(eventName) {
+    const lowerName = eventName.toLowerCase(); // Convert to lowercase so "Math" and "math" both work
+    
+    // Scan the name for any of our keywords
+    for (const [keyword, color] of Object.entries(subjectColors)) {
+        if (lowerName.includes(keyword)) return color;
+    }
+    return subjectColors["default"];
+}
+
+function renderWeeklyPlanner() {
+    if (!plannerGrid) return;
+    plannerGrid.innerHTML = '';
+
+    const timeCol = document.createElement('div');
+    timeCol.classList.add('planner-col', 'time-label-col');
+    timeCol.innerHTML = `<div class="day-title">Time</div>`;
+    
+    for (let h = startHour; h <= endHour; h++) {
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const displayH = h % 12 || 12;
+        timeCol.innerHTML += `<div class="time-label">${displayH} ${ampm}</div>`;
+    }
+    plannerGrid.appendChild(timeCol);
+
+    daysOfWeek.forEach(day => {
+        const dayCol = document.createElement('div');
+        dayCol.classList.add('planner-col');
+        dayCol.innerHTML = `<div class="day-title">${day}</div>`;
+
+        for (let h = startHour; h <= endHour; h++) {
+            const slot = document.createElement('div');
+            slot.classList.add('time-slot');
+            const slotId = `${day}-${h}`;
+
+            // 3. Apply the Dynamic Colors!
+            if (weeklySchedule[slotId]) {
+                const eventName = weeklySchedule[slotId];
+                const bgColor = getColorForEvent(eventName); // Run the scanner!
+                
+                slot.classList.add('filled-slot'); 
+                slot.style.backgroundColor = bgColor; // Inject the color directly into the HTML
+                
+                // If the background is dark grey, make the text white so we can read it!
+                if (bgColor === "#222222") slot.style.color = "#FFFFFF";
+
+                slot.innerHTML = `<div class="saved-event">${eventName}</div>`;
+            }
+
+            slot.addEventListener('click', () => {
+                if (weeklySchedule[slotId]) {
+                    if(confirm(`Remove "${weeklySchedule[slotId]}" from ${day} at ${h % 12 || 12} ${h >= 12 ? 'PM' : 'AM'}?`)) {
+                        delete weeklySchedule[slotId];
+                        saveAndRenderSchedule();
+                    }
+                } else {
+                    const eventName = prompt(`Add class/event for ${day} at ${h % 12 || 12} ${h >= 12 ? 'PM' : 'AM'}:`);
+                    if (eventName && eventName.trim() !== "") {
+                        weeklySchedule[slotId] = eventName.trim();
+                        saveAndRenderSchedule();
+                    }
+                }
+            });
+            dayCol.appendChild(slot);
+        }
+        plannerGrid.appendChild(dayCol);
+    });
+}
+
+function saveAndRenderSchedule() {
+    localStorage.setItem('trackBuddyWeekly', JSON.stringify(weeklySchedule));
+    renderWeeklyPlanner();
+}
+
+// ==========================================
 // INITIALIZE EVERYTHING ON LOAD
+// ==========================================
 renderCalendar();
-saveAndRenderTasks(); // This also triggers updateStatusCard()
+saveAndRenderTasks(); 
 updateTimerDisplay();
-renderBudget();
+renderExpenses();
 setMood(savedMood);
 updateGreeting();
+renderWeeklyPlanner();
