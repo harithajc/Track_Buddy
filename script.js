@@ -15,7 +15,8 @@ const dayEventsList = document.getElementById('day-events-list');
 
 let calendarEvents = JSON.parse(localStorage.getItem('trackBuddyEventsV3')) || {};
 let viewingDate = new Date(); 
-let currentlySelectedDateKey = null; 
+let currentlySelectedDateKey = null;
+let currentlySelectedDayNumber = null;
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function renderCalendar() {
@@ -51,6 +52,7 @@ nextMonthBtn.addEventListener('click', () => { viewingDate.setMonth(viewingDate.
 
 function openModal(day, dateKey) {
     currentlySelectedDateKey = dateKey;
+    currentlySelectedDayNumber = day;
     modalDayTitle.textContent = `Events for ${monthNames[viewingDate.getMonth()]} ${day}`;
     eventNameInput.value = ''; eventTimeInput.value = '';
     renderDayEventsList();
